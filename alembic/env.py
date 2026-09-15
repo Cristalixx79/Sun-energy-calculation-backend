@@ -14,13 +14,12 @@ from models.like import Like
 
 config = context.config
 
-# --- КЛЮЧЕВОЕ ИЗМЕНЕНИЕ ---
-# Для Alembic используем СИНХРОННЫЙ драйвер psycopg2
+
 sync_url = settings.DATABASE_URL.replace(
     "postgresql+asyncpg", "postgresql+psycopg2"
 )
+
 config.set_main_option("sqlalchemy.url", sync_url)
-# ---------------------------
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
