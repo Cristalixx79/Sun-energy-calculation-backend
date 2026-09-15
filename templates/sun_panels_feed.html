@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/sun_panels_style.css">
+    <link rel="stylesheet" href="/static/sun_panels_style.css">
 </head>
 
 <body>
@@ -34,7 +34,8 @@
                     <span class="like-count">{{ likes_count }}</span>
                 </button>
 
-                <a class="icon-btn next-btn" href="/sun_panels_feed/{{ service.id }}?next=true" aria-label="Следующая карточка">
+                <a class="icon-btn next-btn" href="/sun_panels_feed/{{ service.id }}?next=true"
+                    aria-label="Следующая карточка">
                     <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
                     </svg>
@@ -48,10 +49,10 @@
                     {% if more %}
                     {{ service.description }}
                     {% else %}
-                    {{ service.description[:80] }}...
-                    {% endif %}
-                    {% if not more %}
+                    {{ service.description[:90] }}{% if service.description|length > 90 %}…{% endif %}
+                    {% if service.description|length > 90 %}
                     <a href="/sun_panels_feed/{{ service.id }}?more=true" class="more-link">Ещё</a>
+                    {% endif %}
                     {% endif %}
                 </p>
                 <div class="meta-row">

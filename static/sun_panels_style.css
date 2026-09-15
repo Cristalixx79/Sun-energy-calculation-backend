@@ -618,3 +618,42 @@ body {
 .grid-card-likes .like-count {
     line-height: 1;
 }
+
+/* Обёртка карточки — чтобы позиционировать кнопку удаления */
+.grid-card-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.grid-card-wrapper .grid-card {
+    width: 100%;
+}
+
+/* Кнопка удаления в углу карточки */
+.delete-form {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 5;
+}
+
+.delete-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    font-family: inherit;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+}

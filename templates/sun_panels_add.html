@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/sun_panels_style.css">
+    <link rel="stylesheet" href="/static/sun_panels_style.css">
 </head>
+
 <body>
 
     <div class="app-wrapper">
@@ -20,87 +22,103 @@
 
         <main class="form-scroll">
 
-            <div class="form-group">
-                <label for="panel-type">Тип панели</label>
-                <input
-                    type="text"
-                    id="panel-type"
-                    name="panel-type"
-                    value="{{ draft.title }}"
-                    placeholder="Монохроматическая панель"
-                >
-            </div>
+            {% if draft %}
+            {# Есть черновик — форма публикации #}
+            <form action="/sun_panels_draft/publish" method="POST" class="form-scroll-inner">
 
-            <div class="form-group">
-                <label for="panel-desc">Описание</label>
-                <textarea
-                    id="panel-desc"
-                    name="panel-desc"
-                    rows="3"
-                    placeholder="Высокая эффективность 22%, подходит для ограниченных площадей."
-                >{{ draft.description }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="panel-eff">КПД (%)</label>
-                <input
-                    type="text"
-                    id="panel-eff"
-                    name="panel-eff"
-                    value="{{ draft.kpd }}"
-                    placeholder="22"
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="panel-price">Цена (₽/м²)</label>
-                <input
-                    type="text"
-                    id="panel-price"
-                    name="panel-price"
-                    value="{{ draft.price }}"
-                    placeholder="5000"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Изображение</label>
-                <div class="upload-box" role="button" tabindex="0" aria-label="Загрузить изображение">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
+                <div class="form-group">
+                    <label for="panel-type">Тип панели</label>
+                    <input type="text" id="panel-type" name="title" value="{{ draft.title }}" readonly>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label>Видео</label>
-                <div class="upload-box" role="button" tabindex="0" aria-label="Загрузить видео">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                    </svg>
+                <div class="form-group">
+                    <label for="panel-desc">Описание</label>
+                    <textarea id="panel-desc" name="description" rows="3"
+                        placeholder="Краткое описание">{{ draft.description or '' }}</textarea>
                 </div>
-            </div>
 
-            <button type="button" class="next-btn">Далее</button>
+                <div class="form-group">
+                    <label for="panel-eff">КПД (%)</label>
+                    <input type="number" id="panel-eff" name="kpd" value="{{ draft.kpd or '' }}" placeholder="22"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="panel-price">Цена (₽)</label>
+                    <input type="number" step="0.01" id="panel-price" name="price" value="{{ draft.price or '' }}"
+                        placeholder="5000" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Изображение</label>
+                    <div class="upload-box" aria-label="Загрузить изображение">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Видео</label>
+                    <div class="upload-box" aria-label="Загрузить видео">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <button type="submit" class="next-btn">Опубликовать</button>
+            </form>
+
+            {% else %}
+            {# Нет черновика — форма создания #}
+            <form action="/sun_panels_draft" method="POST" class="form-scroll-inner">
+
+                <div class="form-group">
+                    <label for="panel-type">Тип панели</label>
+                    <input type="text" id="panel-type" name="title" placeholder="Монохроматическая панель" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Изображение</label>
+                    <div class="upload-box" aria-label="Загрузить изображение">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Видео</label>
+                    <div class="upload-box" aria-label="Загрузить видео">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <button type="submit" class="next-btn">Далее</button>
+            </form>
+            {% endif %}
 
         </main>
 
         <nav class="bottom-nav">
             <a href="/" class="nav-item">
                 <svg viewBox="0 0 24 24">
-                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
                 </svg>
                 <span>Лента</span>
             </a>
             <a href="/sun_panels_add" class="nav-item active">
                 <svg viewBox="0 0 24 24">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
                 <span>Добавить</span>
             </a>
             <a href="/sun_panels_cards" class="nav-item">
                 <svg viewBox="0 0 24 24">
-                    <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z"/>
+                    <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z" />
                 </svg>
                 <span>Плитка</span>
             </a>
@@ -109,4 +127,5 @@
     </div>
 
 </body>
+
 </html>

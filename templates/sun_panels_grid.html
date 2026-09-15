@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/sun_panels_style.css">
+    <link rel="stylesheet" href="/static/sun_panels_style.css">
 </head>
 
 <body>
@@ -50,23 +50,32 @@
             <div class="grid-container">
 
                 {% for card in cards %}
-                <a href="/sun_panels_feed/{{ card.id }}" class="grid-card">
-                    <img src="{{ card.image_url or 'panel.jpg' }}" alt="{{ card.title }}" class="grid-card-img">
-                    <div class="grid-card-info">
-                        <h3 class="grid-card-title">{{ card.title }}</h3>
-                        <div class="grid-card-price">{{ card.price }} ₽/м²</div>
-                        <div class="grid-card-bottom">
-                            <div class="grid-card-eff">КПД {{ card.kpd }}%</div>
-                            <div class="grid-card-likes">
-                                <svg class="heart-icon-small" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path
-                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                </svg>
-                                <span class="like-count">{{ card.likes_count }}</span>
+                <div class="grid-card-wrapper">
+
+                    <a href="/sun_panels_feed/{{ card.id }}" class="grid-card">
+                        <img src="{{ card.image_url }}" alt="{{ card.title }}" class="grid-card-img">
+                        <div class="grid-card-info">
+                            <h3 class="grid-card-title">{{ card.title }}</h3>
+                            <div class="grid-card-price">{{ card.price }} ₽</div>
+                            <div class="grid-card-bottom">
+                                <div class="grid-card-eff">КПД {{ card.kpd }}%</div>
+                                <div class="grid-card-likes">
+                                    <svg class="heart-icon-small" viewBox="0 0 24 24">
+                                        <path
+                                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                    </svg>
+                                    <span class="like-count">{{ card.likes_count }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+
+                    <!-- POST на удаление через SQL-курсор -->
+                    <form action="/sun_panels_service/{{ card.id }}/delete" method="POST" class="delete-form">
+                        <button type="submit" class="delete-btn" aria-label="Удалить">×</button>
+                    </form>
+
+                </div>
                 {% endfor %}
 
             </div>

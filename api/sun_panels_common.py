@@ -1,42 +1,68 @@
+from sqlalchemy import select, func
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.templating import Jinja2Templates
-from data.sun_panels_collections import sun_panels_collection
 
-sun_panels_templates = Jinja2Templates(directory="templates")
+from models.service import Service
+from models.like import Like
 
-sun_panels_services = sun_panels_collection["services"]
-sun_panels_likes = sun_panels_collection["likes"]
+templates = Jinja2Templates(directory="templates")
 
+DEFAULT_IMAGE = "/static/panel.jpg"
+DEFAULT_VIDEO = "/static/background1.mp4"
 
-def count_likes(service_id: int) -> int:
-    return sum(1 for like in sun_panels_likes if like["service_id"] == service_id)
-
-
-def get_published(service_id: int):
-    for s in sun_panels_services:
-        if s["id"] == service_id and s["status"] == "published":
-            return s
-    return None
+TEST_USER_ID = 1
 
 
-def get_first_published():
-    for s in sun_panels_services:
-        if s["status"] == "published":
-            return s
-    return None
+async def count_likes(db: AsyncSession, service_id: int) -> int:
+    result = await db.execute(
+        select(func.count()).select_from(Like).where(Like.service_id == service_id)
+    )
+    return result.scalar() or 0
 
 
-def get_next_published(service_id: int):
-    published = [s for s in sun_panels_services if s["status"] == "published"]
+async def get_published(db: AsyncSession, service_id: int):
+    result = await db.execute(
+        select(Service).where(
+            Service.id == service_id,
+            Service.status == "published",
+        )
+    )
+    return result.scalar_one_or_none()
+
+
+async def get_first_published(db: AsyncSession):
+    result = await db.execute(
+        select(Service)
+        .where(Service.status == "published")
+        .order_by(Service.id)
+    )
+    return result.scalars().first()
+
+
+async def get_next_published(db: AsyncSession, service_id: int):
+    result = await db.execute(
+        select(Service)
+        .where(Service.status == "published")
+        .order_by(Service.id)
+    )
+    published = result.scalars().all()
     if not published:
         return None
     for i, s in enumerate(published):
-        if s["id"] == service_id:
+        if s.id == service_id:
             return published[(i + 1) % len(published)]
     return published[0]
 
 
-def get_draft():
-    for s in sun_panels_services:
-        if s["status"] == "draft":
-            return s
-    return None
+async def get_draft(db: AsyncSession, user_id: int = TEST_USER_ID):
+    result = await db.execute(
+        select(Service).where(
+            Service.status == "draft",
+            Service.creator_id == user_id,
+        )
+    )
+    return result.scalar_one_or_none()
+
+
+def resolve_media(url: str | None, default: str) -> str:
+    return url or default
