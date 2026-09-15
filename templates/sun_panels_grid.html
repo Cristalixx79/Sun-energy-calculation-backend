@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Плитка</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/sun_panels_style.css">
+</head>
+
+<body>
+
+    <div class="app-wrapper">
+
+        <header class="page-header">
+            <form action="/sun_panels_cards" method="GET" class="filter-component">
+                <label for="kpd-filter" class="filter-label">Фильтр по КПД</label>
+
+                <div class="filter-row">
+                    <div class="select-wrapper">
+                        <select id="kpd-filter" name="kpd" class="filter-select" required>
+                            <option value="" disabled {% if not selected_kpd %}selected{% endif %}>
+                                Выберите диапазон
+                            </option>
+                            <option value="5-10" {% if selected_kpd=='5-10' %}selected{% endif %}>
+                                КПД от 5–10%
+                            </option>
+                            <option value="11-23" {% if selected_kpd=='11-23' %}selected{% endif %}>
+                                КПД от 11–23%
+                            </option>
+                            <option value="24-30" {% if selected_kpd=='24-30' %}selected{% endif %}>
+                                КПД от 24–30%
+                            </option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M7 10l5 5 5-5z" />
+                        </svg>
+                    </div>
+
+                    <button type="submit" class="filter-btn">Отфильтровать</button>
+                </div>
+            </form>
+        </header>
+
+        <main class="grid-scroll">
+            <div class="grid-container">
+
+                {% for card in cards %}
+                <a href="/sun_panels_feed/{{ card.id }}" class="grid-card">
+                    <img src="{{ card.image_url or 'panel.jpg' }}" alt="{{ card.title }}" class="grid-card-img">
+                    <div class="grid-card-info">
+                        <h3 class="grid-card-title">{{ card.title }}</h3>
+                        <div class="grid-card-price">{{ card.price }} ₽/м²</div>
+                        <div class="grid-card-bottom">
+                            <div class="grid-card-eff">КПД {{ card.kpd }}%</div>
+                            <div class="grid-card-likes">
+                                <svg class="heart-icon-small" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                <span class="like-count">{{ card.likes_count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="/" class="nav-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+                </svg>
+                <span>Лента</span>
+            </a>
+            <a href="/sun_panels_add" class="nav-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                </svg>
+                <span>Добавить</span>
+            </a>
+            <a href="/sun_panels_cards" class="nav-item active">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z" />
+                </svg>
+                <span>Плитка</span>
+            </a>
+        </nav>
+
+    </div>
+
+</body>
+
+</html>

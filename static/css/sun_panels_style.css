@@ -1,0 +1,620 @@
+/* =========================================================
+   ОБЩИЕ СТИЛИ (сброс, wrapper, нижняя навигация)
+   ========================================================= */
+
+:root {
+    /* Палитра «светлых» страниц (Добавить, Плитка) */
+    --bg-color: #ffffff;
+    --text-black: #1c1e21;
+    --text-gray: #9a9a9a;
+    --border-color: #dddddd;
+
+    /* Акцент */
+    --accent-color: #127627;
+    --accent-hover: #1a9b34;
+
+    /* Навигация */
+    --nav-bg: #ffffff;
+    --nav-border: #e0e0e0;
+    --nav-text: #666666;
+    --nav-active: #127627;
+
+    /* Каркас */
+    --app-max-width: 450px;
+
+    /* Тёмная палитра страницы «Лента» */
+    --feed-bg: #000000;
+    --feed-card-bg: rgba(30, 30, 30, 0.8);
+    --text-white: #ffffff;
+
+    /* Полупрозрачные поверхности поверх видео */
+    --surface-light: rgba(0, 0, 0, 0.5);
+    --surface-light-hover: rgba(255, 255, 255, 0.22);
+    --surface-light-active: rgba(255, 255, 255, 0.32);
+    --surface-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+
+    /* Сердце */
+    --heart-color: #ff3b30;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.app-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: var(--app-max-width);
+    height: 100vh;
+    height: 100dvh;
+    background-color: var(--bg-color);
+    color: var(--text-black);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Нижняя навигация (общая для всех страниц) --- */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--nav-bg);
+    border-top: 1px solid var(--nav-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+    flex-shrink: 0;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--nav-text);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 33.333%;
+    height: 100%;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    gap: 3px;
+}
+
+.nav-item.active {
+    color: var(--nav-active);
+}
+
+.nav-item svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+
+/* =========================================================
+   СТРАНИЦА «ЛЕНТА» (feed.html)
+   ========================================================= */
+
+/*
+
+/* --- Видео --- */
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Контент поверх видео --- */
+.content-overlay {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;   /* всё прижато к низу */
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+/* --- Столбик круглых иконок справа --- */
+.icon-stack {
+    align-self: flex-end;        /* прижать к правому краю */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;         /* отступ до карточки описания */
+}
+
+/* --- Базовая круглая иконка --- */
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: var(--surface-light);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;          /* круглая форма */
+    width: 80px;
+    height: 80px;
+    padding: 0;
+    color: var(--text-white);
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--surface-shadow);
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.icon-btn:hover {
+    background: var(--surface-light-hover);
+}
+
+.icon-btn:active {
+    background: var(--surface-light-active);
+    transform: scale(0.96);
+}
+
+/* --- Кнопка лайка --- */
+.like-btn {
+    width: auto;
+    min-width: 64px;
+    padding: 0 14px;             /* капсула для лайка, но с сохранением «округлости» */
+}
+
+.heart-icon {
+    width: 26px;
+    height: 26px;
+    fill: var(--heart-color);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.like-btn:hover .heart-icon {
+    transform: scale(1.1);
+}
+
+.like-btn .like-count {
+    line-height: 1;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.arrow-icon {
+    width: 28px;
+    height: 28px;
+    fill: var(--text-white);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.next-btn {
+    background-color: var(--surface-light);
+}
+
+.next-btn:hover {
+    background-color: var(--surface-light-hover);
+}
+
+.next-btn:active {
+    background-color: var(--surface-light-active);
+}
+
+.next-btn:hover .arrow-icon {
+    transform: translateX(2px);
+}
+
+/* --- Карточка описания --- */
+.info-card {
+    background: var(--feed-card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 14px;
+    padding: 16px;
+    width: 100%;
+    box-shadow: var(--surface-shadow);
+}
+
+.info-card h2 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+    color: var(--text-white);
+}
+
+.info-card .desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-white);
+    line-height: 1.45;
+    margin-bottom: 14px;
+}
+
+.more-link {
+    color: var(--text-white);
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.more-link:hover {
+    text-decoration: underline;
+}
+
+.info-card .meta-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-white);
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================================================
+   СТРАНИЦА «ДОБАВИТЬ» (add.html)
+   ========================================================= */
+
+/* --- Заголовок --- */
+.page-header {
+    padding: 18px 20px 8px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.page-header h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-black);
+}
+
+/* --- Прокручиваемая форма --- */
+.form-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 20px 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Поля формы */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-black);
+    margin-bottom: 6px;
+}
+
+/* Инпуты и textarea */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-black);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-gray);
+    font-weight: 400;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--accent-color);
+}
+
+.form-group textarea {
+    resize: none;
+    line-height: 1.4;
+}
+
+/* --- Зоны загрузки (плюс) --- */
+.upload-box {
+    width: 100%;
+    height: 140px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.upload-box:hover {
+    border-color: var(--accent-color);
+    background: #f7fbf8;
+}
+
+.upload-box svg {
+    width: 70px;
+    height: 70px;
+    fill: #cfcfcf;
+    transition: fill 0.2s ease;
+}
+
+.upload-box:hover svg {
+    fill: var(--accent-color);
+}
+
+/* --- Кнопка «Далее» на странице добавления --- */
+.form-scroll .next-btn {
+    width: 100%;
+    height: 56px;
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 8px;
+    flex-shrink: 0;
+    box-shadow: none;
+}
+
+.form-scroll .next-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.form-scroll .next-btn:active {
+    background-color: #0e5e1f;
+}
+
+
+/* =========================================================
+   СТРАНИЦА «ПЛИТКА» (grid.html)
+   ========================================================= */
+
+/* --- Заголовок с фильтром --- */
+.page-header {
+    padding: 18px 20px 14px;
+    flex-shrink: 0;
+}
+
+.filter-component {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-black);
+}
+
+.filter-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.select-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+}
+
+.filter-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 12px 36px 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-black);
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.filter-select:focus,
+.filter-select:hover {
+    border-color: var(--accent-color);
+}
+
+.filter-select:invalid,
+.filter-select option[value=""] {
+    color: var(--text-gray);
+}
+
+.select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    fill: var(--text-gray);
+    pointer-events: none;
+}
+
+.filter-btn {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+    padding: 0 18px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.filter-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.filter-btn:active {
+    background-color: #0e5e1f;
+}
+
+/* --- Прокрутка сетки --- */
+.grid-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 20px 80px;
+}
+
+/* Сетка из 2 колонок */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* Карточка */
+.grid-card {
+    display: flex;
+    flex-direction: column;
+    height: 240px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.grid-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 10px rgba(18, 118, 39, 0.12);
+}
+
+/* Изображение */
+.grid-card-img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+    background: #eee;
+    flex-shrink: 0;
+}
+
+/* Информация */
+.grid-card-info {
+    padding: 10px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.grid-card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-black);
+    line-height: 1.2;
+}
+
+.grid-card-price {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-color);
+    line-height: 1.2;
+}
+
+/* Нижняя строка: КПД слева, лайки справа */
+.grid-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* прижимаем к низу карточки */
+}
+
+.grid-card-eff {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-black);
+    line-height: 1.2;
+}
+
+/* Лайки */
+.grid-card-likes {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #666666;
+}
+
+.heart-icon-small {
+    width: 16px;
+    height: 16px;
+    fill: #ff3b30;
+    flex-shrink: 0;
+}
+
+.grid-card-likes .heart {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.grid-card-likes .like-count {
+    line-height: 1;
+}
