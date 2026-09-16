@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Request, Depends, Form, HTTPException
+from fastapi import (
+    APIRouter, Request, Depends, Form, File, UploadFile, HTTPException,
+)
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +24,15 @@ async def get_add_page(request: Request, db: AsyncSession = Depends(get_db)):
 @router.post("/sun_panels_draft")
 async def create_draft(
     title: str = Form(""),
+    image: UploadFile | None = File(None),
+    video: UploadFile | None = File(None),
     db: AsyncSession = Depends(get_db),
 ):
+    if image and image.filename:
+        await image.read()
+    if video and video.filename:
+        await video.read()
+
     existing = await get_draft(db, TEST_USER_ID)
     if existing is not None:
         return RedirectResponse(url="/sun_panels_add", status_code=303)
@@ -46,8 +55,15 @@ async def publish_draft(
     description: str = Form(""),
     kpd: int = Form(...),
     price: float = Form(...),
+    image: UploadFile | None = File(None),
+    video: UploadFile | None = File(None),
     db: AsyncSession = Depends(get_db),
 ):
+    if image and image.filename:
+        await image.read()
+    if video and video.filename:
+        await video.read()
+
     draft = await get_draft(db, TEST_USER_ID)
     if draft is None:
         raise HTTPException(status_code=404, detail="Черновик не найден")
