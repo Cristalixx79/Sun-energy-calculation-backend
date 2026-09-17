@@ -1,2 +1,4 @@
-templating-lab1
-__pycache__
+.env
+__pycache__/
+*.pyc
+.venv/
