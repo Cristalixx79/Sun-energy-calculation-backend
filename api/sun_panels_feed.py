@@ -35,6 +35,7 @@ def get_feed_by_id(
     service_id: int,
     next: bool = False,
     more: bool = False,
+    less: bool = False,
 ):
     service = get_published(service_id)
     if service is None:
@@ -54,5 +55,6 @@ def get_feed_by_id(
             "service": service,
             "likes_count": count_likes(service["id"]),
             "more": more,
+            "less": less,
         },
     )

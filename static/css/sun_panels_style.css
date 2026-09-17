@@ -618,3 +618,14 @@ body {
 .grid-card-likes .like-count {
     line-height: 1;
 }
+
+.info-btn {
+    border-radius: 20%;
+    width: 80px;
+    height: 60px;
+    padding: 2px 4px;
+}
+
+.info-value {
+    font-size: 12px;
+}
