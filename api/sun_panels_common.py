@@ -7,8 +7,8 @@ from models.like import Like
 
 templates = Jinja2Templates(directory="templates")
 
-DEFAULT_IMAGE = "/static/panel.jpg"
-DEFAULT_VIDEO = "/static/background1.mp4"
+DEFAULT_IMAGE = "http://localhost:9000/media/panel1.jpg"
+DEFAULT_VIDEO = "http://localhost:9000/media/background1.jpg"
 
 TEST_USER_ID = 1
 

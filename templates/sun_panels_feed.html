@@ -18,7 +18,7 @@
 
         <div class="video-container">
             <video autoplay loop muted playsinline>
-                <source src="{{ service.video_url or '../assets/resoursec/video/background1.mp4' }}" type="video/mp4">
+                <source src="{{ service.video_url or '/static/backgroung1.mp4' }}" type="video/mp4">
             </video>
         </div>
 
@@ -41,6 +41,23 @@
                     </svg>
                 </a>
 
+                <div class="icon-btn info-btn" aria-label="КПД"
+                    style="border-radius: 20%; width: 80px; height: 60px; padding: 2px 4px;">
+                    <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
+                    </svg>
+                    <span class="info-value" style="font-size: 12px;">{{ service.kpd }}%</span>
+                </div>
+
+                <div class="icon-btn info-btn" aria-label="Цена за м²"
+                    style="border-radius: 20%; width: 80px; height: 60px; padding: 2px 4px;">
+                    <svg class="info-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M12 1l-9 4.5v13L12 23l9-4.5v-13L12 1zm0 2.18l6.9 3.45L12 10.09 5.1 6.63 12 3.18zM5 8.34l6 3v8.32l-6-3V8.34zm8 11.32v-8.32l6-3v8.32l-6 3z" />
+                    </svg>
+                    <span class="info-value" style="font-size: 12px;">{{ service.price }} ₽/м²</span>
+                </div>
+
             </div>
 
             <div class="info-card">
@@ -48,16 +65,14 @@
                 <p class="desc">
                     {% if more %}
                     {{ service.description }}
+                    <a href="/sun_panels_feed/{{ service.id }}?less=true" class="more-link">Меньше</a>
                     {% else %}
-                    {{ service.description[:90] }}{% if service.description|length > 90 %}…{% endif %}
-                    {% if service.description|length > 90 %}
+                    {{ service.description[:80] }}...
+                    {% endif %}
+                    {% if not more %}
                     <a href="/sun_panels_feed/{{ service.id }}?more=true" class="more-link">Ещё</a>
                     {% endif %}
-                    {% endif %}
                 </p>
-                <div class="meta-row">
-                    <span>КПД {{ service.kpd }}%, Цена {{ service.price }} ₽/м²</span>
-                </div>
             </div>
 
         </div>
