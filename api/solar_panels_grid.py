@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.session import get_db
 from models.service import Service
-from api.sun_panels_common import (
+from api.solar_panels_common import (
     templates,
     count_likes,
     resolve_media,
@@ -16,7 +16,7 @@ from api.sun_panels_common import (
 router = APIRouter(tags=["grid"])
 
 
-@router.get("/sun_panels_cards", response_class=HTMLResponse)
+@router.get("/solar_panels_cards", response_class=HTMLResponse)
 async def get_cards(
     request: Request,
     kpd: str = None,
@@ -49,7 +49,7 @@ async def get_cards(
 
     return templates.TemplateResponse(
         request=request,
-        name="sun_panels_grid.html",
+        name="solar_panels_grid.html",
         context={
             "cards": cards,
             "selected_kpd": kpd or "",
@@ -57,7 +57,7 @@ async def get_cards(
     )
 
 
-@router.post("/sun_panels_service/{service_id}/delete")
+@router.post("/solar_panels_service/{service_id}/delete")
 async def delete_service(
     service_id: int,
     db: AsyncSession = Depends(get_db),
@@ -71,4 +71,4 @@ async def delete_service(
     await db.execute(text(update_query), {"id": service_id})
     await db.commit()
 
-    return RedirectResponse(url="/sun_panels_cards", status_code=303)
+    return RedirectResponse(url="/solar_panels_cards", status_code=303)

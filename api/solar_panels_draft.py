@@ -6,22 +6,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.session import get_db
 from models.service import Service
-from api.sun_panels_common import templates, get_draft, TEST_USER_ID
+from api.solar_panels_common import templates, get_draft, TEST_USER_ID
 
 router = APIRouter(tags=["draft"])
 
 
-@router.get("/sun_panels_add", response_class=HTMLResponse)
+@router.get("/solar_panels_add", response_class=HTMLResponse)
 async def get_add_page(request: Request, db: AsyncSession = Depends(get_db)):
     draft = await get_draft(db, TEST_USER_ID)
     return templates.TemplateResponse(
         request=request,
-        name="sun_panels_add.html",
+        name="solar_panels_add.html",
         context={"draft": draft},
     )
 
 
-@router.post("/sun_panels_draft")
+@router.post("/solar_panels_draft")
 async def create_draft(
     title: str = Form(""),
     image: UploadFile | None = File(None),
@@ -35,7 +35,7 @@ async def create_draft(
 
     existing = await get_draft(db, TEST_USER_ID)
     if existing is not None:
-        return RedirectResponse(url="/sun_panels_add", status_code=303)
+        return RedirectResponse(url="/solar_panels_add", status_code=303)
 
     service = Service(
         title=title.strip() or "Без названия",
@@ -46,10 +46,10 @@ async def create_draft(
     db.add(service)
     await db.commit()
 
-    return RedirectResponse(url="/sun_panels_add", status_code=303)
+    return RedirectResponse(url="/solar_panels_add", status_code=303)
 
 
-@router.post("/sun_panels_draft/publish")
+@router.post("/solar_panels_draft/publish")
 async def publish_draft(
     title: str = Form(...),
     description: str = Form(""),
@@ -76,4 +76,4 @@ async def publish_draft(
 
     await db.commit()
 
-    return RedirectResponse(url="/sun_panels_add", status_code=303)
+    return RedirectResponse(url="/solar_panels_add", status_code=303)

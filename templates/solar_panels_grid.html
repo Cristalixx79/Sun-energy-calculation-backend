@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/sun_panels_style.css">
+    <link rel="stylesheet" href="/static/solar_panels_style.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
     <div class="app-wrapper">
 
         <header class="page-header">
-            <form action="/sun_panels_cards" method="GET" class="filter-component">
+            <form action="/solar_panels_cards" method="GET" class="filter-component">
                 <label for="kpd-filter" class="filter-label">Фильтр по КПД</label>
 
                 <div class="filter-row">
@@ -52,7 +52,7 @@
                 {% for card in cards %}
                 <div class="grid-card-wrapper">
 
-                    <a href="/sun_panels_feed/{{ card.id }}" class="grid-card">
+                    <a href="/solar_panels_feed/{{ card.id }}" class="grid-card">
                         <img src="{{ card.image_url }}" alt="{{ card.title }}" class="grid-card-img">
                         <div class="grid-card-info">
                             <h3 class="grid-card-title">{{ card.title }}</h3>
@@ -71,7 +71,7 @@
                     </a>
 
                     <!-- POST на удаление через SQL-курсор -->
-                    <form action="/sun_panels_service/{{ card.id }}/delete" method="POST" class="delete-form">
+                    <form action="/solar_panels_service/{{ card.id }}/delete" method="POST" class="delete-form">
                         <button type="submit" class="delete-btn" aria-label="Удалить">×</button>
                     </form>
 
@@ -88,13 +88,13 @@
                 </svg>
                 <span>Лента</span>
             </a>
-            <a href="/sun_panels_add" class="nav-item">
+            <a href="/solar_panels_add" class="nav-item">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
                 <span>Добавить</span>
             </a>
-            <a href="/sun_panels_cards" class="nav-item active">
+            <a href="/solar_panels_cards" class="nav-item active">
                 <svg viewBox="0 0 24 24">
                     <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z" />
                 </svg>

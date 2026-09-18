@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.session import get_db
-from api.sun_panels_common import (
+from api.solar_panels_common import (
     templates,
     count_likes,
     get_published,
@@ -29,7 +29,7 @@ async def get_feed(
 
     return templates.TemplateResponse(
         request=request,
-        name="sun_panels_feed.html",
+        name="solar_panels_feed.html",
         context={
             "service": service,
             "likes_count": await count_likes(db, service.id),
@@ -40,7 +40,7 @@ async def get_feed(
     )
 
 
-@router.get("/sun_panels_feed/{service_id}", response_class=HTMLResponse)
+@router.get("/solar_panels_feed/{service_id}", response_class=HTMLResponse)
 async def get_feed_by_id(
     request: Request,
     service_id: int,
@@ -63,7 +63,7 @@ async def get_feed_by_id(
 
     return templates.TemplateResponse(
         request=request,
-        name="sun_panels_feed.html",
+        name="solar_panels_feed.html",
         context={
             "service": service,
             "likes_count": await count_likes(db, service.id),
