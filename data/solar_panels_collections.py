@@ -1,4 +1,4 @@
-sun_panels_services = [
+solar_panels_services = [
     {
         "id": 1,
         "title": "Монокристаллические",
@@ -57,7 +57,7 @@ sun_panels_services = [
     },
 ]
 
-sun_panels_likes = [
+solar_panels_likes = [
     {"service_id": 1, "user_id": 101},
     {"service_id": 1, "user_id": 102},
     {"service_id": 1, "user_id": 103},
@@ -157,7 +157,7 @@ sun_panels_likes = [
     {"service_id": 4, "user_id": 142},
 ]
 
-sun_panels_collection = {
-    "services": sun_panels_services,
-    "likes": sun_panels_likes,
+solar_panels_collection = {
+    "services": solar_panels_services,
+    "likes": solar_panels_likes,
 }

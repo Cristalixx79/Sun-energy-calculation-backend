@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/sun_panels_style.css">
+    <link rel="stylesheet" href="/static/css/solar_panels_style.css">
 </head>
 
 <body>
@@ -34,7 +34,7 @@
                     <span class="like-count">{{ likes_count }}</span>
                 </button>
 
-                <a class="icon-btn next-btn" href="/sun_panels_feed/{{ service.id }}?next=true"
+                <a class="icon-btn next-btn" href="/solar_panels_feed/{{ service.id }}?next=true"
                     aria-label="Следующая карточка">
                     <svg class="arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
@@ -63,12 +63,12 @@
                 <p class="desc">
                     {% if more %}
                     {{ service.description }}
-                    <a href="/sun_panels_feed/{{ service.id }}?less=true" class="more-link">Меньше</a>
+                    <a href="/solar_panels_feed/{{ service.id }}?less=true" class="more-link">Меньше</a>
                     {% else %}
                     {{ service.description[:80] }}...
                     {% endif %}
                     {% if not more %}
-                    <a href="/sun_panels_feed/{{ service.id }}?more=true" class="more-link">Ещё</a>
+                    <a href="/solar_panels_feed/{{ service.id }}?more=true" class="more-link">Ещё</a>
                     {% endif %}
                 </p>
             </div>
@@ -82,13 +82,13 @@
                 </svg>
                 <span>Лента</span>
             </a>
-            <a href="/sun_panels_add" class="nav-item">
+            <a href="/solar_panels_add" class="nav-item">
                 <svg viewBox="0 0 24 24">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                 </svg>
                 <span>Добавить</span>
             </a>
-            <a href="/sun_panels_cards" class="nav-item">
+            <a href="/solar_panels_cards" class="nav-item">
                 <svg viewBox="0 0 24 24">
                     <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z" />
                 </svg>
