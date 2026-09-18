@@ -20,35 +20,33 @@
             <form action="/solar_panels_cards" method="GET" class="filter-component">
                 <label for="kpd-filter" class="filter-label">Фильтр по КПД</label>
 
-                <div class="filter-row">
-                    <div class="select-wrapper">
-                        <select id="kpd-filter" name="kpd" class="filter-select" required>
-                            <option value="" disabled {% if not selected_kpd %}selected{% endif %}>
-                                Выберите диапазон
-                            </option>
-                            <option value="5-10" {% if selected_kpd=='5-10' %}selected{% endif %}>
-                                КПД от 5–10%
-                            </option>
-                            <option value="11-23" {% if selected_kpd=='11-23' %}selected{% endif %}>
-                                КПД от 11–23%
-                            </option>
-                            <option value="24-30" {% if selected_kpd=='24-30' %}selected{% endif %}>
-                                КПД от 24–30%
-                            </option>
-                        </select>
-                        <svg class="select-arrow" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7 10l5 5 5-5z" />
-                        </svg>
+                <div class="filter-row" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <input type="range" id="kpd-filter" name="kpd_below_than" class="filter-slider" min="0" max="40"
+                            step="1" value="{{ selected_kpd or 25 }}" style="width: 150px;">
+                        <div class="kpd-value-display" style="margin-left: 5px;">{{ selected_kpd or 25 }}%</div>
                     </div>
 
-                    <button type="submit" class="filter-btn">Отфильтровать</button>
+                    <button type="submit" class="filter-btn"
+                        style="height: 40px; padding: 5px 40px;">Отфильтровать</button>
                 </div>
             </form>
         </header>
 
         <main class="grid-scroll">
             <div class="grid-container">
-
+                {% if no_cards_found %}
+                <div class="empty-state">
+                    <svg class="empty-state-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 3h8v8H3zm0 10h8v8H3zM13 3h8v8h-8zm0 10h8v8h-8z" />
+                    </svg>
+                    <h3 class="empty-state-title">Ничего не найдено</h3>
+                    <p class="empty-state-text">
+                        По выбранному КПД нет ни одной солнечной панели.<br>
+                        Попробуйте увеличить значение ползунка.
+                    </p>
+                </div>
+                {% else %}
                 {% for card in cards %}
                 <a href="/solar_panels_feed/{{ card.id }}" class="grid-card">
                     <img src="{{ card.image_url or 'panel.jpg' }}" alt="{{ card.title }}" class="grid-card-img">
@@ -68,7 +66,7 @@
                     </div>
                 </a>
                 {% endfor %}
-
+                {% endif %}
             </div>
         </main>
 
