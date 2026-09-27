@@ -20,32 +20,20 @@
             <form action="/solar_panels_cards" method="GET" class="filter-component">
                 <label for="kpd-filter" class="filter-label">Фильтр по КПД</label>
 
-                <div class="filter-row">
-                    <div class="select-wrapper">
-                        <select id="kpd-filter" name="kpd" class="filter-select" required>
-                            <option value="" disabled {% if not selected_kpd %}selected{% endif %}>
-                                Выберите диапазон
-                            </option>
-                            <option value="5-10" {% if selected_kpd=='5-10' %}selected{% endif %}>
-                                КПД от 5–10%
-                            </option>
-                            <option value="11-23" {% if selected_kpd=='11-23' %}selected{% endif %}>
-                                КПД от 11–23%
-                            </option>
-                            <option value="24-30" {% if selected_kpd=='24-30' %}selected{% endif %}>
-                                КПД от 24–30%
-                            </option>
-                        </select>
-                        <svg class="select-arrow" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7 10l5 5 5-5z" />
-                        </svg>
+                <div class="filter-row" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <input type="range" id="kpd-filter" name="kpd_below_than" class="filter-slider" min="0" max="40"
+                            step="1" value="{{ selected_kpd or 25 }}" style="width: 150px;"
+                            oninput="document.getElementById('kpd-value').textContent = this.value + '%'">
+                        <div class="kpd-value-display" id="kpd-value" style="margin-left: 5px;">{{ selected_kpd or 25 }}%</div>
                     </div>
 
-                    <button type="submit" class="filter-btn">Отфильтровать</button>
+                    <button type="submit" class="filter-btn"
+                        style="height: 40px; padding: 5px 40px;">Отфильтровать</button>
                 </div>
             </form>
         </header>
-
+        
         <main class="grid-scroll">
             <div class="grid-container">
 
