@@ -23,8 +23,9 @@
                 <div class="filter-row" style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <input type="range" id="kpd-filter" name="kpd_below_than" class="filter-slider" min="0" max="40"
-                            step="1" value="{{ selected_kpd or 25 }}" style="width: 150px;">
-                        <div class="kpd-value-display" style="margin-left: 5px;">{{ selected_kpd or 25 }}%</div>
+                            step="1" value="{{ selected_kpd or 25 }}" style="width: 150px;"
+                            oninput="document.getElementById('kpd-value').textContent = this.value + '%'">
+                        <div class="kpd-value-display" id="kpd-value" style="margin-left: 5px;">{{ selected_kpd or 25 }}%</div>
                     </div>
 
                     <button type="submit" class="filter-btn"
