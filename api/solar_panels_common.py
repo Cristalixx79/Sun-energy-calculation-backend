@@ -8,7 +8,7 @@ from models.like import Like
 templates = Jinja2Templates(directory="templates")
 
 DEFAULT_IMAGE = "http://localhost:9000/media/panel1.jpg"
-DEFAULT_VIDEO = "http://localhost:9000/media/background1.jpg"
+DEFAULT_VIDEO = "http://localhost:9000/media/background1.mp4"
 
 TEST_USER_ID = 1
 
@@ -65,4 +65,6 @@ async def get_draft(db: AsyncSession, user_id: int = TEST_USER_ID):
 
 
 def resolve_media(url: str | None, default: str) -> str:
-    return url or default
+    if url is None or url == "":
+        return default
+    return url

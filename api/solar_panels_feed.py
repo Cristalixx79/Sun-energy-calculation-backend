@@ -50,7 +50,6 @@ async def get_feed_by_id(
 ):
     service = await get_published(db, service_id)
     if service is None:
-        # Если не найдена или удалена — открываем первую опубликованную
         service = await get_first_published(db)
         if service is None:
             raise HTTPException(status_code=404, detail="Нет опубликованных услуг")

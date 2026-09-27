@@ -19,15 +19,10 @@ router = APIRouter(tags=["grid"])
 @router.get("/solar_panels_cards", response_class=HTMLResponse)
 async def get_cards(
     request: Request,
-    kpd: str = None,
+    kpd_below_than: str = '25',
     db: AsyncSession = Depends(get_db),
 ):
-    lo, hi = None, None
-    if kpd:
-        try:
-            lo, hi = (int(x) for x in kpd.split("-"))
-        except (ValueError, TypeError):
-            lo, hi = None, None
+    upper_boundary = int(kpd_below_than)
 
     stmt = select(Service).where(Service.status == "published")
     result = await db.execute(stmt)
@@ -35,7 +30,7 @@ async def get_cards(
 
     cards = []
     for s in services:
-        if lo is not None and s.kpd is not None and not (lo <= s.kpd <= hi):
+        if upper_boundary is not None and not (s.kpd <= upper_boundary):
             continue
         cards.append({
             "id": s.id,
@@ -47,12 +42,17 @@ async def get_cards(
             "likes_count": await count_likes(db, s.id),
         })
 
+    no_cards = False
+    if len(cards) == 0:
+        no_cards = True
+
     return templates.TemplateResponse(
         request=request,
         name="solar_panels_grid.html",
         context={
             "cards": cards,
-            "selected_kpd": kpd or "",
+            "selected_kpd": kpd_below_than or "",
+            "no_cards_found": no_cards,
         },
     )
 
