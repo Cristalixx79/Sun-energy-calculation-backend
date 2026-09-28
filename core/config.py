@@ -2,9 +2,6 @@ import os
 
 
 class Settings:
-    """Настройки приложения. Значения по умолчанию совпадают с прежними,
-    но каждое можно переопределить переменной окружения — это удобно для
-    docker-compose и для тестового стенда с Minio."""
 
     DB_HOST: str = os.getenv("DB_HOST", "localhost")
     DB_PORT: int = int(os.getenv("DB_PORT", "5433"))

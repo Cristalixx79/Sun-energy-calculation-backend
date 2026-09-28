@@ -14,7 +14,5 @@ class UserOut(BaseModel):
 
 
 class UserLoginIn(BaseModel):
-    """Заглушка на лаб. №4 — сейчас реального входа не выполняет."""
-
     username: str
     password: str

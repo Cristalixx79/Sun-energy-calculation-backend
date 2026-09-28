@@ -5,7 +5,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ServiceListItem(BaseModel):
-    """Элемент списка/плитки — только опубликованные услуги."""
 
     id: int
     title: str
@@ -20,7 +19,6 @@ class ServiceListItem(BaseModel):
 
 
 class ServiceOut(BaseModel):
-    """Полное представление услуги (лента, черновик, результат создания/публикации)."""
 
     id: int
     title: str
@@ -40,10 +38,6 @@ class ServiceOut(BaseModel):
 
 
 class ServicePublishIn(BaseModel):
-    """Тело запроса PUT /api/services/{id}/publish.
-
-    Системные поля (id, status, creator_id, даты) сюда намеренно не входят —
-    клиент не может их передать/изменить."""
 
     title: Optional[str] = Field(None, min_length=1, max_length=100)
     description: str = Field("", max_length=500)
@@ -52,7 +46,6 @@ class ServicePublishIn(BaseModel):
 
 
 class LikeIn(BaseModel):
-    """Тело запроса POST /api/services/{id}/like."""
 
     value: int = Field(..., ge=0, le=1, description="1 — поставить лайк, 0 — снять лайк")
 

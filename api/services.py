@@ -28,9 +28,6 @@ async def list_services(
     kpd_below_than: Optional[int] = Query(default=None, ge=0, le=100),
     db: AsyncSession = Depends(get_db),
 ):
-    """GET /api/services — список опубликованных услуг с фильтрацией по КПД.
-    Для каждой услуги отдаётся признак is_own (1, если создатель — текущий
-    пользователь)."""
     current_user_id = get_current_user_id()
 
     stmt = select(Service).where(Service.status == "published")
@@ -58,7 +55,6 @@ async def list_services(
 
 @router.get("/feed", response_model=ServiceOut)
 async def get_feed(db: AsyncSession = Depends(get_db)):
-    """GET /api/services/feed — лента, без id: первая опубликованная услуга."""
     service = await get_first_published(db)
     if service is None:
         raise HTTPException(status_code=404, detail="Нет опубликованных услуг")
@@ -71,8 +67,6 @@ async def get_feed_by_id(
     next: bool = False,
     db: AsyncSession = Depends(get_db),
 ):
-    """GET /api/services/feed/{id}?next=true — лента с конкретной услуги
-    либо следующая опубликованная услуга по кругу."""
     service = await get_published(db, service_id)
     if service is None:
         raise HTTPException(status_code=404, detail="Услуга не найдена")
@@ -88,9 +82,6 @@ async def get_feed_by_id(
 
 @router.get("/draft", response_model=Optional[ServiceOut])
 async def get_my_draft(db: AsyncSession = Depends(get_db)):
-    """GET /api/services/draft — черновик текущего пользователя (id не
-    указывается — пользователю разрешён не более чем один черновик).
-    Возвращает null, если черновика нет."""
     current_user_id = get_current_user_id()
     draft = await get_draft(db, current_user_id)
     if draft is None:
@@ -105,9 +96,6 @@ async def create_service(
     video: Optional[UploadFile] = File(None),
     db: AsyncSession = Depends(get_db),
 ):
-    """POST /api/services — создание черновика + загрузка файлов изображения
-    и видео (в Minio; в БД пишется только сгенерированное имя файла).
-    Системные поля (id, status, creator_id, даты) с клиента не принимаются."""
     current_user_id = get_current_user_id()
 
     existing = await get_draft(db, current_user_id)
@@ -141,8 +129,6 @@ async def publish_service(
     payload: ServicePublishIn,
     db: AsyncSession = Depends(get_db),
 ):
-    """PUT /api/services/{id}/publish — публикация: draft -> published.
-    Только для своего черновика; обратного перехода в draft не существует."""
     current_user_id = get_current_user_id()
 
     service = await get_own_service(db, service_id, current_user_id)
@@ -168,9 +154,10 @@ async def publish_service(
 
 
 @router.delete("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_service(service_id: int, db: AsyncSession = Depends(get_db)):
-    """DELETE /api/services/{id} — soft delete (status = deleted), через ORM,
-    только для услуг текущего пользователя."""
+async def delete_service(
+    service_id: int,
+    db: AsyncSession = Depends(get_db)
+):
     current_user_id = get_current_user_id()
 
     service = await get_own_service(db, service_id, current_user_id)
@@ -188,8 +175,6 @@ async def like_service(
     payload: LikeIn,
     db: AsyncSession = Depends(get_db),
 ):
-    """POST /api/services/{id}/like — лайк от текущего пользователя.
-    value=1 ставит лайк, value=0 снимает."""
     current_user_id = get_current_user_id()
 
     service = await get_published(db, service_id)

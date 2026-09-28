@@ -11,8 +11,10 @@ router = APIRouter()
 
 
 @router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
-async def register(payload: UserRegisterIn, db: AsyncSession = Depends(get_db)):
-    """POST /api/users/register — регистрация нового пользователя."""
+async def register(
+    payload: UserRegisterIn,
+    db: AsyncSession = Depends(get_db)
+):
     result = await db.execute(select(User).where(User.username == payload.username))
     if result.scalar_one_or_none() is not None:
         raise HTTPException(
@@ -30,7 +32,6 @@ async def register(payload: UserRegisterIn, db: AsyncSession = Depends(get_db)):
 
 @router.post("/login")
 async def login(payload: UserLoginIn):
-    """POST /api/users/login — заглушка аутентификации (реализуется в лаб. №4)."""
     return {
         "detail": "Аутентификация будет реализована в лабораторной работе №4",
         "username": payload.username,
@@ -39,5 +40,4 @@ async def login(payload: UserLoginIn):
 
 @router.post("/logout")
 async def logout():
-    """POST /api/users/logout — заглушка деавторизации (реализуется в лаб. №4)."""
     return {"detail": "Деавторизация будет реализована в лабораторной работе №4"}

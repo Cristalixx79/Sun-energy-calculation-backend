@@ -1,13 +1,3 @@
-"""
-Обёртка над Minio для хранения изображений и коротких видео услуг.
-
-По заданию: сами файлы лежат в Minio, а в БД (`services.image_filename`,
-`services.video_filename`) сохраняется только сгенерированное на
-латинице имя файла — независимо от того, как файл назывался у клиента
-(в том числе если имя было на кириллице). Готовый URL для отдачи
-клиенту собирается функцией `build_media_url` из этого модуля.
-"""
-
 import io
 import uuid
 from pathlib import Path
@@ -36,9 +26,6 @@ def get_minio_client() -> Minio:
 
 
 def _generate_latin_filename(original_name: Optional[str]) -> str:
-    """uuid4 гарантированно состоит из латинских символов и цифр —
-    этого достаточно, чтобы удовлетворить требование "имена файлов
-    генерируются на латинице", независимо от исходного имени файла."""
     suffix = Path(original_name or "").suffix.lower()
     if not suffix.isascii() or len(suffix) > 10:
         suffix = ""
@@ -46,8 +33,7 @@ def _generate_latin_filename(original_name: Optional[str]) -> str:
 
 
 async def upload_media(file: UploadFile, subdir: str) -> str:
-    """Загружает файл в Minio, возвращает имя объекта (для записи в БД)."""
-    object_name = f"{subdir}/{_generate_latin_filename(file.filename)}"
+    object_name = f"{_generate_latin_filename(file.filename)}"
 
     data = await file.read()
     client = get_minio_client()

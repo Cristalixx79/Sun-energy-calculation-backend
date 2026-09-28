@@ -1,10 +1,3 @@
-"""Общие для домена "услуга" запросы к БД и сериализация в схему ответа.
-
-Важно: везде, где нужен "текущий пользователь", используется
-core.current_user.get_current_user_id() — единая функция-singleton,
-а не отдельные константы в каждом файле.
-"""
-
 from typing import Optional
 
 from sqlalchemy import select, func
