@@ -34,8 +34,8 @@ async def get_feed(
             "service": service,
             "likes_count": await count_likes(db, service.id),
             "more": more,
-            "image_url": resolve_media(service.image_url, DEFAULT_IMAGE),
-            "video_url": resolve_media(service.video_url, DEFAULT_VIDEO),
+            "image_url": resolve_media(service.image_filename, DEFAULT_IMAGE),
+            "video_url": resolve_media(service.video_filename, DEFAULT_VIDEO),
         },
     )
 
@@ -67,7 +67,7 @@ async def get_feed_by_id(
             "service": service,
             "likes_count": await count_likes(db, service.id),
             "more": more,
-            "image_url": resolve_media(service.image_url, DEFAULT_IMAGE),
-            "video_url": resolve_media(service.video_url, DEFAULT_VIDEO),
+            "image_url": resolve_media(service.image_filename, DEFAULT_IMAGE),
+            "video_url": resolve_media(service.video_filename, DEFAULT_VIDEO),
         },
     )

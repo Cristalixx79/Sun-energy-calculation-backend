@@ -37,8 +37,8 @@ async def get_cards(
             "title": s.title,
             "price": s.price,
             "kpd": s.kpd,
-            "image_url": resolve_media(s.image_url, DEFAULT_IMAGE),
-            "video_url": resolve_media(s.video_url, DEFAULT_VIDEO),
+            "image_url": resolve_media(s.image_filename, DEFAULT_IMAGE),
+            "video_url": resolve_media(s.video_filename, DEFAULT_VIDEO),
             "likes_count": await count_likes(db, s.id),
         })
 

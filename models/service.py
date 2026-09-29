@@ -10,10 +10,11 @@ class Service(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), nullable=False)
     description = Column(String(500), nullable=False, default="")
+
     status = Column(String(20), nullable=False, default="draft")
 
-    image_url = Column(String(255), nullable=True)
-    video_url = Column(String(255), nullable=True)
+    image_filename = Column(String(255), nullable=True)
+    video_filename = Column(String(255), nullable=True)
 
     kpd = Column(Integer, nullable=True)
     price = Column(Float, nullable=True)
