@@ -1,4 +1,4 @@
-# Vibes — Solar Panels Service (Лабораторная работа №3)
+# Solar Panels Service (Лабораторная работа №3)
 
 Backend REST API на FastAPI для сервиса объявлений об аренде/продаже
 солнечных панелей. Бэкенд рассчитан на использование из SPA и
