@@ -1,6 +1,46 @@
-.env
+# === Python ===
 __pycache__/
-*.cpython-314.pyc
-*.cpython.pyc
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# === Виртуальные окружения ===
 .venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# === Тестирование / кэш ===
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+
+# === Jupyter ===
+.ipynb_checkpoints/
+
+# === IDE / редакторы ===
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# === ОС ===
+.DS_Store
+Thumbs.db
+
+# === Переменные окружения и секреты ===
+.env
+.env.*
+!.env.example
