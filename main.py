@@ -9,8 +9,8 @@ solar_panels_app = FastAPI(
     description="Backend REST API (домены: услуга, пользователь) для SPA «Vibes».",
 )
 
-solar_panels_app.include_router(services_router, prefix="/api/services", tags=["services"])
-solar_panels_app.include_router(users_router, prefix="/api/users", tags=["users"])
+solar_panels_app.include_router(services_router, prefix="/api/solar_panels_services", tags=["services"])
+solar_panels_app.include_router(users_router, prefix="/api/solar_panels_users", tags=["users"])
 
 if __name__ == "__main__":
     uvicorn.run(
