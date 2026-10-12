@@ -10,7 +10,7 @@ from api.solar_panel_users import router as users_router
 from storage.solar_panel_session_store import close_redis
 
 API_DESCRIPTION = """
-Backend REST API для SPA «Vibes» — сервис объявлений о солнечных панелях.
+Backend REST API — сервис объявлений о солнечных панелях.
 
 **Как авторизоваться в Swagger**
 
@@ -57,8 +57,8 @@ async def redis_unavailable_handler(request: Request, exc: RedisError):
     )
 
 
-solar_panels_app.include_router(services_router, prefix="/api/services", tags=["services"])
-solar_panels_app.include_router(users_router, prefix="/api/users", tags=["users"])
+solar_panels_app.include_router(services_router, prefix="/api/solar_panel_services", tags=["services"])
+solar_panels_app.include_router(users_router, prefix="/api/solar_panel_users", tags=["users"])
 
 if __name__ == "__main__":
     uvicorn.run(
