@@ -15,7 +15,7 @@ def get_minio_client() -> Minio:
     global _client
     if _client is None:
         _client = Minio(
-            endpoint=settings.MINIO_ENDPOINT,
+            settings.MINIO_ENDPOINT,
             access_key=settings.MINIO_ACCESS_KEY,
             secret_key=settings.MINIO_SECRET_KEY,
             secure=settings.MINIO_SECURE,
@@ -33,7 +33,7 @@ def _generate_latin_filename(original_name: Optional[str]) -> str:
 
 
 async def upload_media(file: UploadFile, subdir: str) -> str:
-    object_name = f"{_generate_latin_filename(file.filename)}"
+    object_name = f"{subdir}/{_generate_latin_filename(file.filename)}"
 
     data = await file.read()
     client = get_minio_client()

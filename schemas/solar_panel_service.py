@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ServiceListItem(BaseModel):
+    """Элемент списка/плитки — только опубликованные услуги."""
 
     id: int
     title: str
@@ -19,6 +20,7 @@ class ServiceListItem(BaseModel):
 
 
 class ServiceOut(BaseModel):
+    """Полное представление услуги (лента, черновик, результат создания/публикации)."""
 
     id: int
     title: str
@@ -38,16 +40,36 @@ class ServiceOut(BaseModel):
 
 
 class ServicePublishIn(BaseModel):
+    """Тело запроса PUT /api/services/{id}/publish.
 
-    title: Optional[str] = Field(None, min_length=1, max_length=100)
-    description: str = Field("", max_length=500)
-    kpd: int = Field(..., ge=0, le=100)
-    price: float = Field(..., ge=0)
+    Системные поля (id, status, creator_id, даты) сюда намеренно не входят —
+    клиент не может их передать/изменить."""
+
+    title: Optional[str] = Field(None, min_length=1, max_length=100, description="Название (необязательно — иначе остаётся прежнее)")
+    description: str = Field("", max_length=500, description="Описание услуги")
+    kpd: int = Field(..., ge=0, le=100, description="КПД панели, %")
+    price: float = Field(..., ge=0, description="Цена, ₽/м²")
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "title": "Монокристаллическая панель X1",
+                    "description": "Панель с высоким КПД для частного дома",
+                    "kpd": 21,
+                    "price": 5400,
+                }
+            ]
+        }
+    )
 
 
 class LikeIn(BaseModel):
+    """Тело запроса POST /api/services/{id}/like."""
 
     value: int = Field(..., ge=0, le=1, description="1 — поставить лайк, 0 — снять лайк")
+
+    model_config = ConfigDict(json_schema_extra={"examples": [{"value": 1}]})
 
 
 class LikeOut(BaseModel):

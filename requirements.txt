@@ -7,3 +7,4 @@ alembic
 pydantic
 python-multipart
 minio
+redis>=5.0.1

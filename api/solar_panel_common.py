@@ -1,11 +1,18 @@
+"""Общие для домена "услуга" запросы к БД и сериализация в схему ответа.
+
+"Текущий пользователь" приходит из сессии (core.auth): id передаётся в
+функции этого модуля параметром, для гостя это None.
+"""
+
 from typing import Optional
 
+from fastapi import HTTPException, status
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.solar_panel_service import Service
 from models.solar_panel_like import Like
-from schemas.solar_panel_service import ServiceOut
+from schemas.solar_panel_user import ServiceOut
 from storage.solar_panel_minio_client import build_media_url
 
 
@@ -63,20 +70,28 @@ async def get_draft(db: AsyncSession, user_id: int) -> Optional[Service]:
     return result.scalar_one_or_none()
 
 
-async def get_own_service(db: AsyncSession, service_id: int, user_id: int) -> Optional[Service]:
-    """Услуга по id, но только если она принадлежит указанному пользователю
-    (используется для publish/delete — свои услуги, любой статус кроме deleted)."""
+async def get_service_for_owner(db: AsyncSession, service_id: int, user_id: int) -> Service:
+    """Услуга по id для методов создателя (publish/delete).
+
+    404 — услуги нет, она удалена или это чужой черновик (чужие черновики
+    не раскрываем); 403 — услуга опубликована, но принадлежит другому."""
     result = await db.execute(
-        select(Service).where(
-            Service.id == service_id,
-            Service.creator_id == user_id,
-            Service.status != "deleted",
-        )
+        select(Service).where(Service.id == service_id, Service.status != "deleted")
     )
-    return result.scalar_one_or_none()
+    service = result.scalar_one_or_none()
+    if service is None or (service.creator_id != user_id and service.status != "published"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Услуга не найдена")
+    if service.creator_id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Услуга принадлежит другому пользователю",
+        )
+    return service
 
 
-async def serialize_service(db: AsyncSession, service: Service, current_user_id: int) -> ServiceOut:
+async def serialize_service(
+    db: AsyncSession, service: Service, current_user_id: Optional[int]
+) -> ServiceOut:
     return ServiceOut(
         id=service.id,
         title=service.title,
@@ -87,7 +102,7 @@ async def serialize_service(db: AsyncSession, service: Service, current_user_id:
         image_url=build_media_url(service.image_filename),
         video_url=build_media_url(service.video_filename),
         creator_id=service.creator_id,
-        is_own=1 if service.creator_id == current_user_id else 0,
+        is_own=1 if current_user_id is not None and service.creator_id == current_user_id else 0,
         likes_count=await count_likes(db, service.id),
         created_at=service.created_at,
         updated_at=service.updated_at,
