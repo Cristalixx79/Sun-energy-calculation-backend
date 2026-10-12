@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.solar_panel_service import Service
 from models.solar_panel_like import Like
-from schemas.solar_panel_user import ServiceOut
+from schemas.solar_panel_service import ServiceOut
 from storage.solar_panel_minio_client import build_media_url
 
 

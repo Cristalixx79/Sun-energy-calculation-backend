@@ -22,7 +22,7 @@ from typing import Optional
 
 import redis.asyncio as aioredis
 
-from core.config import settings
+from core.solar_panel_config import settings
 
 _SESSION_PREFIX = "session:"
 
