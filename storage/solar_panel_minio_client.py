@@ -6,7 +6,7 @@ from typing import Optional
 from fastapi import UploadFile
 from minio import Minio
 
-from core.config import settings
+from core.solar_panel_config import settings
 
 _client: Optional[Minio] = None
 

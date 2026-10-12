@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
 )
-from core.config import settings
+from core.solar_panel_config import settings
 
 engine = create_async_engine(settings.DATABASE_URL, echo=False)
 

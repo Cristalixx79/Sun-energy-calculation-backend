@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from db.base import Base
+from db.solar_panel_base import Base
 
 
 class User(Base):

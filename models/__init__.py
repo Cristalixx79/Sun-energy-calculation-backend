@@ -1,5 +1,5 @@
-from models.user import User
-from models.service import Service
-from models.like import Like
+from models.solar_panel_user import User
+from models.solar_panel_service import Service
+from models.solar_panel_like import Like
 
 __all__ = ["User", "Service", "Like"]

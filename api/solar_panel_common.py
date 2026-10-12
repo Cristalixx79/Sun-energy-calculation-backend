@@ -3,10 +3,10 @@ from typing import Optional
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.service import Service
-from models.like import Like
-from schemas.service import ServiceOut
-from storage.minio_client import build_media_url
+from models.solar_panel_service import Service
+from models.solar_panel_like import Like
+from schemas.solar_panel_service import ServiceOut
+from storage.solar_panel_minio_client import build_media_url
 
 
 async def count_likes(db: AsyncSession, service_id: int) -> int:

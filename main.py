@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 import uvicorn
 
-from api.services import router as services_router
-from api.users import router as users_router
+from api.solar_panel_services import router as services_router
+from api.solar_panel_users import router as users_router
 
 solar_panels_app = FastAPI(
     title="Solar Panels Service API",
     description="Backend REST API (домены: услуга, пользователь) для SPA «Vibes».",
 )
 
-solar_panels_app.include_router(services_router, prefix="/api/solar_panels_services", tags=["services"])
-solar_panels_app.include_router(users_router, prefix="/api/solar_panels_users", tags=["users"])
+solar_panels_app.include_router(services_router, prefix="/api/solar_panel_services", tags=["services"])
+solar_panels_app.include_router(users_router, prefix="/api/solar_panel_users", tags=["users"])
 
 if __name__ == "__main__":
     uvicorn.run(

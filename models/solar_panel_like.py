@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, ForeignKey, UniqueConstraint
-from db.base import Base
+from db.solar_panel_base import Base
 
 
 class Like(Base):

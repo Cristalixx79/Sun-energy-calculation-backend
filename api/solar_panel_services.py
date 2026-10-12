@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Upload
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.session import get_db
-from core.current_user import get_current_user_id
-from models.service import Service
-from models.like import Like
-from schemas.service import ServiceListItem, ServiceOut, ServicePublishIn, LikeIn, LikeOut
-from storage.minio_client import upload_media, build_media_url
-from api.common import (
+from db.solar_panel_session import get_db
+from core.solar_panel_current_user import get_current_user_id
+from models.solar_panel_service import Service
+from models.solar_panel_like import Like
+from schemas.solar_panel_service import ServiceListItem, ServiceOut, ServicePublishIn, LikeIn, LikeOut
+from storage.solar_panel_minio_client import upload_media, build_media_url
+from api.solar_panel_common import (
     count_likes,
     get_published,
     get_first_published,

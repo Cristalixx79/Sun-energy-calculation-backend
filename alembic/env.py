@@ -5,12 +5,12 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
-from core.config import settings
-from db.base import Base
+from core.solar_panel_config import settings
+from db.solar_panel_base import Base
 # Импортируйте здесь все ваши модели!
-from models.user import User
-from models.service import Service
-from models.like import Like
+from models.solar_panel_user import User
+from models.solar_panel_service import Service
+from models.solar_panel_like import Like
 
 config = context.config
 

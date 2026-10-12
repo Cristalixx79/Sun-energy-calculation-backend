@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.session import get_db
-from core.security import hash_password
-from models.user import User
-from schemas.user import UserRegisterIn, UserOut, UserLoginIn
+from db.solar_panel_session import get_db
+from core.solar_panel_security import hash_password
+from models.solar_panel_user import User
+from schemas.solar_panel_user import UserRegisterIn, UserOut, UserLoginIn
 
 router = APIRouter()
 
